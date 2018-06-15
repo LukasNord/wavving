@@ -1,6 +1,6 @@
 
 const clientID = 'f8e107f0be684bfca99d4ff59b32585f';
-const redirectURI = 'http://localhost:3000/';
+const redirectURI = 'https://wavving.surge.sh';
 const searchBase = 'https://api.spotify.com/v1/';
 const accessBase = 'https://accounts.spotify.com/authorize';
 let token;

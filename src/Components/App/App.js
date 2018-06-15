@@ -42,9 +42,10 @@ class App extends Component {
 
     //reset search and results playlists to null
     this.setState({
-      searchResults: []
+      searchResults: [],
+      playlistTracks: []
     });
-    this.updatePlaylistName('New Playlist');
+    this.updatePlaylistName('');
   }
 
   search(term) {
