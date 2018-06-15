@@ -9,12 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults : [{
-        name: 'sample name',
-        artist: 'artist',
-        album: 'album',
-        id: 1
-      }],
+      searchResults : [],
       playlistName : "",
       playlistTracks: []
     };
@@ -42,14 +37,16 @@ class App extends Component {
     this.setState({playlistName: name});
   }
   savePlaylist() {
-    const trackURIs = this.state.playlistTracks.map(playlistTrack => playlistTrack.uri);
+    const trackUris = this.state.playlistTracks.map(playlistTrack => playlistTrack.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackUris);
 
-    //Reset search field and playlist field after saving playlist out to Spotify
+    //reset search and results playlists to null
     this.setState({
       searchResults: []
     });
     this.updatePlaylistName('New Playlist');
   }
+
   search(term) {
     Spotify.search(term).then(searchResults => {
       this.setState({searchResults: searchResults})

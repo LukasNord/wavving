@@ -1,34 +1,33 @@
-let accessToken;
 
 const clientID = 'f8e107f0be684bfca99d4ff59b32585f';
 const redirectURI = 'http://localhost:3000/';
 const searchBase = 'https://api.spotify.com/v1/';
 const accessBase = 'https://accounts.spotify.com/authorize';
+let token;
 
 const Spotify = {
   getAccessToken() {
-    if(accessToken){
-      return accessToken;
+    if(token) {
+      return token;
     }
     const URLToken = window.location.href.match(/access_token=([^&]*)/);
     const tokenExpiration = window.location.href.match(/expires_in=([^&]*)/);
     if (URLToken && tokenExpiration) {
-      accessToken = URLToken[1];
+      token = URLToken[1];
       const expires = Number(tokenExpiration[1]);
-      window.setTimeout(()=> accessToken = '', expires * 1000);
+      window.setTimeout(()=> token = '', expires * 1000);
       window.history.pushState('Access Token', null, '/');
-      return accessToken;
+      return token;
     } else {
       const accessURL = `${accessBase}?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
       window.location = accessURL;
     }
   },
-
   search(term) {
-    let accessToken = Spotify.getAccessToken();
+    let token = Spotify.getAccessToken();
     return fetch(`${searchBase}search?type=track&q=${term}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${token}`
       }
     }).then(response => {
       return response.json();
@@ -49,7 +48,7 @@ const Spotify = {
     if (!name || !trackUris || trackUris.length === 0) return;
     const searchURL = searchBase + 'me';
     const headers = {
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${token}`
     };
     let userID;
     let playlistID;
